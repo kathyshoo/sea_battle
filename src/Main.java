@@ -3,6 +3,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
+
         Scanner input = new Scanner(System.in);
         //массив с буквами
         char[] alf = new char[]{'А','Б','В','Г','Д','Е','Ж','З','И','К'};
@@ -15,17 +16,21 @@ public class Main {
                 if (i==0 & l!=0){
                     pole[0][l] = alf[l-1] + "";
                     polevra[0][l] = alf[l-1] + "";
+                    koravra[0][l] = alf[l-1] + "";
                 } else if (l==0 & i!=0) {
                     if (i<10){
                         pole[i][0] = i + " ";
                         polevra[i][0] = i + " ";
+                        koravra[i][0] = i + " ";
                     } else {
                         pole[i][0] = i + "";
                         polevra[i][0] = i + "";
+                        koravra[i][0] = i + "";
                     }
                 } else {
                     pole[i][l] = "◯";
                     polevra[i][l] = "◯";
+                    koravra[i][l] = "◯";
                 }
             }
         }
@@ -34,8 +39,10 @@ public class Main {
             pole[i][11] = " ";
             polevra[11][i] = " ";
             polevra[i][11] = " ";
+            koravra[11][i] = " ";
+            koravra[i][11] = " ";
         }
-        koravra = botkor(polevra);
+        koravra = botkor(polevra,alf);
         //первый вывод
         for (int i = 0; i<11;i++){
             for (int l = 0; l<11;l++){
@@ -48,7 +55,7 @@ public class Main {
             }
             System.out.println();
         }
-
+        viv(koravra);
         for (int i=1;i<5;i++) {
             //распологаем однопалубные корабли
             System.out.print("Выберите, где расположить " + i + "-й однопалубный корабль (Пример ввода: А1): ");
@@ -181,6 +188,9 @@ public class Main {
         System.out.print("2... ");
         TimeUnit.SECONDS.sleep(3);
         System.out.println("1... ");
+        TimeUnit.SECONDS.sleep(3);
+        System.out.println("Игра начата... ");
+
     }
     public static int wheAlf(char[] a,char b){
         int temp = 0;
@@ -282,8 +292,8 @@ public class Main {
         }
 
     }
-    public static String[][] botkor(String[][] polev){
-        polev[1][1]="□";
+    public static String[][] botkor(String[][] a,char[] alf){
+        /*polev[1][1]="□";
         polev[3][1]="□"; polev[3][2]="□";
         polev[1][5]="□";
         polev[1][9]="□"; polev[2][9]="□"; polev[3][9]="□"; polev[4][9]="□";
@@ -292,7 +302,153 @@ public class Main {
         polev[3][6]="□"; polev[4][6]="□"; polev[5][6]="□";
         polev[10][10]="□";
         polev[8][9]="□"; polev[9][9]="□";
-        polev[7][1]="□"; polev[8][1]="□";
-        return polev;
+        polev[7][1]="□"; polev[8][1]="□";*/
+        for (int i=0;i<4;i++){
+            char bukva = alf[(int) (Math.random()*10)];
+            int zifra = (int) (Math.random()*10+1);
+            if (!a[zifra][wheAlf(alf,bukva)].equals("□") & mainprov(bukva,bukva,zifra,zifra,alf,a)){
+                a[zifra][wheAlf(alf,bukva)] = "□";
+            } else {
+                i--;
+            }
+        }
+        for (int i=0;i<3;i++){
+            char bukva = alf[(int) (Math.random()*10)];
+            int zifra = (int) (Math.random()*10+1);
+            int zifra1=-1; char bukva1='Р';
+            while(zifra1<1 | zifra1>10 | bukva1=='Р'){
+                bukva = alf[(int) (Math.random()*10)];
+                zifra = (int) (Math.random()*10+1);
+                int temp = (int) (Math.random()*4+1);
+                switch (temp){
+                    case 1 -> {
+                        if(zifra>1 & zifra<10) {
+                            zifra1 = zifra - 1;
+                            bukva1 = bukva;
+                        }
+                    }
+                    case 2 -> {
+                        if(wheAlf(alf, bukva)>0 & wheAlf(alf, bukva)<10) {
+                            zifra1 = zifra;
+                            bukva1 = alf[wheAlf(alf, bukva)];
+                        }
+                    }
+                    case 3 -> {
+                        if (zifra<10 & zifra>1){
+                            zifra1 = zifra + 1;
+                            bukva1 = bukva;
+                        }
+                    }
+                    default -> {
+                        if (wheAlf(alf, bukva)>2 & wheAlf(alf, bukva)<11){
+                            zifra1 = zifra;
+                            bukva1 = alf[wheAlf(alf, bukva) - 2];
+                        }
+                    }
+                }
+            }
+            if (!a[zifra][wheAlf(alf,bukva)].equals("□") & !a[zifra1][wheAlf(alf,bukva1)].equals("□") & mainprov(bukva,bukva1,zifra,zifra1,alf,a)){
+                a[zifra][wheAlf(alf,bukva)] = "□";
+                a[zifra1][wheAlf(alf,bukva1)] = "□";
+            } else {
+                i--;
+            }
+        }
+
+        for (int i=0;i<2;i++){
+            char bukva = alf[(int) (Math.random()*10)];
+            int zifra = (int) (Math.random()*10+1);
+            int zifra1=-1; char bukva1='P';
+            while(zifra1<1 | zifra1>10 | bukva1=='Р') {
+                bukva = alf[(int) (Math.random()*10)];
+                zifra = (int) (Math.random()*10+1);
+                int temp = (int) (Math.random()*4+1);
+                switch (temp) {
+                    case 1 -> {
+                        if(zifra>2 & zifra<11) {
+                            zifra1 = zifra - 2;
+                            bukva1 = bukva;
+                        }
+                    }
+                    case 2 -> {
+                        if(wheAlf(alf, bukva)<9 & wheAlf(alf, bukva)>0) {
+                            zifra1 = zifra;
+                            bukva1 = alf[wheAlf(alf, bukva) + 1];
+                        }
+                    }
+                    case 3 -> {
+                        if(zifra<9 & zifra>0) {
+                            zifra1 = zifra + 2;
+                            bukva1 = bukva;
+                        }
+                    }
+                    default -> {
+                        if (wheAlf(alf, bukva)>3 & wheAlf(alf, bukva)<11) {
+                            zifra1 = zifra;
+                            bukva1 = alf[wheAlf(alf, bukva) - 3];
+                        }
+                    }
+                }
+            }
+            if (!a[zifra][wheAlf(alf,bukva)].equals("□") & !a[zifra1][wheAlf(alf,bukva1)].equals("□") & !a[(zifra+zifra1)/2][(wheAlf(alf,bukva)+wheAlf(alf,bukva1))/2].equals("□") & mainprov(bukva,bukva1,zifra,zifra1,alf,a)){
+                a[zifra][wheAlf(alf,bukva)] = "□";
+                a[(zifra+zifra1)/2][(wheAlf(alf,bukva)+wheAlf(alf,bukva1))/2] = "□";
+                a[zifra1][wheAlf(alf,bukva1)] = "□";
+            } else {
+                i--;
+            }
+        }
+        for (int i=0;i<1;i++){
+            char bukva=' ';
+            int zifra=0;
+            int zifra1=-1; char bukva1='P';
+            while(zifra1<1 | zifra1>10 | bukva1=='Р') {
+                bukva = alf[(int) (Math.random()*10)];
+                zifra = (int) (Math.random()*10+1);
+                int temp = (int) (Math.random()*4+1);
+                switch (temp) {
+                    case 1 -> {
+                        if (zifra>3 & zifra<11) {
+                            zifra1 = zifra - 3;
+                            bukva1 = bukva;
+                        }
+                    }
+                    case 2 -> {
+                        if (wheAlf(alf, bukva)<8 & wheAlf(alf, bukva)>0) {
+                            zifra1 = zifra;
+                            bukva1 = alf[wheAlf(alf, bukva) + 2];
+                        }
+                    }
+                    case 3 -> {
+                        if(zifra<8 & zifra>0) {
+                            zifra1 = zifra + 3;
+                            bukva1 = bukva;
+                        }
+                    }
+                    default -> {
+                        if (wheAlf(alf, bukva)>4 & wheAlf(alf, bukva)<11) {
+                            zifra1 = zifra;
+                            bukva1 = alf[wheAlf(alf, bukva) - 4];
+                        }
+                    }
+                }
+            }
+            if (!a[zifra][wheAlf(alf,bukva)].equals("□") & !a[zifra1][wheAlf(alf,bukva1)].equals("□") & !a[(zifra+zifra1)/2][(wheAlf(alf,bukva)+wheAlf(alf,bukva1))/2].equals("□") & !a[(zifra+zifra1)/2+1][(wheAlf(alf,bukva)+wheAlf(alf,bukva1))/2+1].equals("□") & mainprov(bukva,bukva1,zifra,zifra1,alf,a)){
+                System.out.println(zifra + "  " + bukva1 + zifra1 + "  " + bukva);
+                System.out.println(mainprov(bukva,bukva1,zifra,zifra1,alf,a));
+                a[zifra][wheAlf(alf,bukva)] = "□";
+                a[(zifra+zifra1)/2][(wheAlf(alf,bukva)+wheAlf(alf,bukva1))/2] = "□";
+                if (bukva == bukva1){
+                    a[(zifra+zifra1)/2+1][wheAlf(alf,bukva)] = "□";
+                } else {
+                    a[zifra][(wheAlf(alf,bukva)+wheAlf(alf,bukva1))/2+1] = "□";
+                }
+                a[zifra1][wheAlf(alf,bukva1)] = "□";
+            } else {
+                i--;
+            }
+        }
+        return a;
     }
+
 }
