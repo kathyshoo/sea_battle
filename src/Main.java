@@ -55,7 +55,7 @@ public class Main {
             System.out.println();
         }
         viv(koravra);
-        /*for (int i=1;i<5;i++) {
+        for (int i=1;i<5;i++) {
             //распологаем однопалубные корабли
             System.out.print("Выберите, где расположить " + i + "-й однопалубный корабль (Пример ввода: А1): ");
             String qwe = input.next();
@@ -144,7 +144,7 @@ public class Main {
                 i--;
                 System.out.println("Корабль расположен неправильно");
             }
-        }*/
+        }
         for (int i=1;i<2;i++){
             //распологаем четырёхпалубный корабль
             System.out.print("Выберите, где расположить четырёхпалубный корабль (Пример ввода: А1 А4): ");
