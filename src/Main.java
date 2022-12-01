@@ -237,14 +237,16 @@ public class Main {
                 break;
             }
             while(!hodP){
-                int kor = (int) (Math.random()*10+1);
-                int temp = (int) (Math.random()*10+1);
+                int[] tempi = ii(pole);
+                int temp = tempi[0];
+                int kor = tempi[1];
                 if (!pole[temp][kor].equals("▣") | !pole[temp][kor].equals("▮")){
                     if (pole[temp][kor].equals("□")){
                         System.out.println("Бот попал");
                         pole[temp][kor] = "▣";
                         if (die(pole,temp,wheAlf(alf,alf[kor-1]))){
                             System.out.println("Корабль потоплен!!");
+                            pole = zak(pole,temp,kor);
                         }
                         if (end(pole)){
                             System.out.println("Бот победил, вы проиграли(( В следующий раз повезёт");
@@ -252,9 +254,12 @@ public class Main {
                         }
                     } else {
                         System.out.println("Бот промахнулся. Ваш ход");
+                        pole[temp][kor] = "#";
                         hodP = true;
                     }
                 }
+                System.out.println("Ваше поле:");
+                viv(pole);
             }
         }
     }
@@ -599,5 +604,40 @@ public class Main {
             }
         }
         return endb;
+    }
+    static public int[] ii(String[][] a){
+        int[] b = new int[]{100,100};
+        for (int y=1; y<11; y++){
+            for (int x=1; x<11; x++){
+                if (a[y][x].equals("▣")){
+                    b[0] = y;
+                    b[1] = x;
+                }
+            }
+        }
+        boolean t1=true;
+        if (b[0]>10){
+            while (t1){
+                b[0] = (int) (Math.random()*10+1);
+                b[1] = (int) (Math.random()*10+1);
+                if (!a[b[0]+1][b[1]].equals("▮") & !a[b[0]][b[1]+1].equals("▮") & !a[b[0]-1][b[1]].equals("▮") & !a[b[0]][b[1]-1].equals("▮")){
+                    t1=false;
+                }
+            }
+        } else {
+            while (t1){
+                int t = (int) (Math.random() * 4);
+                switch (t) {
+                    case 0 -> b[0]++;
+                    case 1 -> b[1]++;
+                    case 2 -> b[0]--;
+                    case 3 -> b[1]--;
+                }
+                if (b[0]<11 & b[0]>0 & b[1]<11 & b[1]>0){
+                    t1=false;
+                }
+            }
+        }
+        return b;
     }
 }
