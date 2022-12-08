@@ -41,7 +41,6 @@ public class Main {
             koravra[11][i] = " ";
             koravra[i][11] = " ";
         }
-        koravra = botkor(koravra,alf);
         //первый вывод
         for (int i = 0; i<11;i++){
             for (int l = 0; l<11;l++){
